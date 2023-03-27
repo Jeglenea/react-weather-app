@@ -6,27 +6,30 @@ import {
     AccordionItemPanel
 } from "react-accessible-accordion"
 import "./forecast.css"
-const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+const forecastHours = ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"]
 const Forecast = ({ data }) => {
-    const dayInAWeek = new Date().getDay()
-    const forecastDays = weekDays.slice(dayInAWeek, weekDays.length).concat(weekDays.slice(0, dayInAWeek))
-    /* temp_min/max sorunlu aynı değerleri gösteriyor temp ve feels_like olarak değişicek,
-     forecast 3 saatlik şekilde gösteriyor soru çözülmeli,
+    const hour = new Date().getHours()
+    const forecastStartIndex = Math.floor(hour / 3)
+    const forecastTimes = forecastHours.slice(forecastStartIndex, forecastHours.length).concat(forecastHours.slice(0, forecastStartIndex))
+    /* forecast 3 saatlik şekilde gösteriyor soru çözülmeli,
      sea level current weather e eklenicek*/ 
     return (
         <>
-            <label className="title">Daily</label>
+            <label className="title">Hourly Forecast</label>
             <Accordion allowZeroExpanded>
-                {data.list.splice(0, 7).map((item, idx) => (
+                {data.list.slice(0, 7).map((item, idx) => (
                     <AccordionItem key={idx}>
                         <AccordionItemHeading>
                             <AccordionItemButton>
                                 <div className="daily-item">
                                     <img alt="weather" className="icon-small" src={`icons/${item.weather[0].icon}.png`} />
-                                    <label className="day">{forecastDays[idx]}</label>
+                                    <label className="hour">{forecastTimes[idx]}</label>
+                                    {new Date(item.dt_txt).getDate() !== new Date().getDate() && (
+                                    <label className="next-day">Next day</label>)}
+                                    {new Date(item.dt_txt) < new Date() && (
+                                    <label className="next-day">Passed</label>)}
                                     <label className="desc">{item.weather[0].description}</label>
-                                    
-                                    <label className="min-max">{Math.round(item.main.temp_min)}°C / {Math.round(item.main.temp_max)}°C</label>
+                                    <label className="temp-feelsLike">{Math.round(item.main.temp)}°C / {Math.round(item.main.feels_like)}°C</label>
                                 </div>
                             </AccordionItemButton>
                         </AccordionItemHeading>
@@ -47,14 +50,6 @@ const Forecast = ({ data }) => {
                                 <div className="daily-detail-grid-item">
                                     <label>Wind speed</label>
                                     <label>{item.wind.speed} m/s</label>
-                                </div>
-                                <div className="daily-detail-grid-item">
-                                    <label>Sea level</label>
-                                    <label>{item.main.sea_level} m</label>
-                                </div>
-                                <div className="daily-detail-grid-item">
-                                    <label>Fells like</label>
-                                    <label>{Math.round(item.main.feels_like)}°C</label>
                                 </div>
                             </div>
                         </AccordionItemPanel>
