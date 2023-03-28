@@ -1,63 +1,82 @@
-import {
-    Accordion,
-    AccordionItem,
-    AccordionItemButton,
-    AccordionItemHeading,
-    AccordionItemPanel
-} from "react-accessible-accordion"
-import "./forecast.css"
-const forecastHours = ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"]
+import { useState } from 'react';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
+import "./forecast.css";
+
+const forecastHours = ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"];
+
 const Forecast = ({ data }) => {
-    const hour = new Date().getHours()
-    const forecastStartIndex = Math.floor(hour / 3)
-    const forecastTimes = forecastHours.slice(forecastStartIndex, forecastHours.length).concat(forecastHours.slice(0, forecastStartIndex))
+    const [selected, setSelected] = useState(null);
+    const hour = new Date().getHours();
+    const forecastStartIndex = Math.floor(hour / 3);
+    const forecastTimes = forecastHours.slice(forecastStartIndex, forecastHours.length).concat(forecastHours.slice(0, forecastStartIndex));
     /* forecast 3 saatlik şekilde gösteriyor soru çözülmeli,
-     sea level current weather e eklenicek*/ 
+     sea level current weather e eklenicek*/
     return (
         <>
-            <label className="title">Hourly Forecast</label>
-            <Accordion allowZeroExpanded>
-                {data.list.slice(0, 7).map((item, idx) => (
-                    <AccordionItem key={idx}>
-                        <AccordionItemHeading>
-                            <AccordionItemButton>
-                                <div className="daily-item">
-                                    <img alt="weather" className="icon-small" src={`icons/${item.weather[0].icon}.png`} />
-                                    <label className="hour">{forecastTimes[idx]}</label>
-                                    {new Date(item.dt_txt).getDate() !== new Date().getDate() && (
-                                    <label className="next-day">Next day</label>)}
-                                    {new Date(item.dt_txt) < new Date() && (
-                                    <label className="next-day">Passed</label>)}
-                                    <label className="desc">{item.weather[0].description}</label>
-                                    <label className="temp-feelsLike">{Math.round(item.main.temp)}°C / {Math.round(item.main.feels_like)}°C</label>
-                                </div>
-                            </AccordionItemButton>
-                        </AccordionItemHeading>
-                        <AccordionItemPanel>
-                            <div className="daily-detail-grid">
-                                <div className="daily-detail-grid-item">
-                                    <label>Pressure</label>
-                                    <label>{item.main.pressure}</label>
-                                </div>
-                                <div className="daily-detail-grid-item">
-                                    <label>Humidity</label>
-                                    <label>{item.main.humidity}</label>
-                                </div>
-                                <div className="daily-detail-grid-item">
-                                    <label>Clouds</label>
-                                    <label>{item.clouds.all}% </label>
-                                </div>
-                                <div className="daily-detail-grid-item">
-                                    <label>Wind speed</label>
-                                    <label>{item.wind.speed} m/s</label>
-                                </div>
+            <Typography variant="h6" gutterBottom>
+                Hourly Forecast
+            </Typography>
+            {data.list.slice(0, 7).map((item, idx) => (
+                <Accordion
+                    key={idx}
+                    expanded={selected === idx}
+                    onChange={() => setSelected(selected === idx ? null : idx)}
+                >
+                    <AccordionSummary
+                        expandIcon={<ExpandMore />}
+                        aria-controls={`panel${idx}-content`}
+                        id={`panel${idx}-header`}
+                    >
+                        <>
+                            <img alt="weather" className="weather-icon" src={`icons/${item.weather[0].icon}.png`} />
+                            <Typography variant="subtitle1" className='forecast-time'>{forecastTimes[idx]}</Typography>
+                            {new Date(item.dt_txt).getDate() !== new Date().getDate() && (
+                                <Typography variant="subtitle2">Next day</Typography>)}
+                            {new Date(item.dt_txt) < new Date() && (
+                                <Typography variant="subtitle2">Passed</Typography>)}
+                            <Typography variant="subtitle2" className='weather-description'>{item.weather[0].description}</Typography>
+                            <Typography variant="subtitle2" className='temperature'>{Math.round(item.main.temp)}°C / {Math.round(item.main.feels_like)}°C</Typography>
+                        </>
+                    </AccordionSummary>
+                    <AccordionDetails className="accordion-content">
+                        <div className="daily-detail-grid">
+                            <div className="daily-detail-grid-item">
+                                <Typography variant="subtitle2">Pressure</Typography>
+                                <Typography variant="subtitle2">{item.main.pressure}</Typography>
                             </div>
-                        </AccordionItemPanel>
-                    </AccordionItem>
-                ))}
-            </Accordion>
+                            <div className="daily-detail-grid-item">
+                                <Typography variant="subtitle2">Humidity</Typography>
+                                <Typography variant="subtitle2">{item.main.humidity}</Typography>
+                            </div>
+                            <div className="daily-detail-grid-item">
+                                <Typography variant="subtitle2">Clouds</Typography>
+                                <Typography variant="subtitle2">{item.clouds.all}% </Typography>
+                            </div>
+                            <div className="daily-detail-grid-item">
+                                <Typography variant="subtitle2">Wind Speed</Typography>
+                                <Typography variant="subtitle2">{item.wind.speed} m/s</Typography>
+                            </div>
+                            <div className="daily-detail-grid-item">
+                                <Typography variant="subtitle2">Wind Direction</Typography>
+                                <Typography variant="subtitle2">{item.wind.deg}°</Typography>
+                            </div>
+                            <div className="daily-detail-grid-item">
+                                <Typography variant="subtitle2">Visibility</Typography>
+                                <Typography variant="subtitle2">{(item.visibility / 1000).toFixed(1)} km</Typography>
+                            </div>    
+                            <div className="daily-detail-grid-item">
+                                <Typography variant="subtitle2">UV Index</Typography>
+                                <Typography variant="subtitle2">{item.uvi}</Typography>
+                            </div>
+                        </div>
+                    </AccordionDetails>
+                </Accordion>
+            ))
+            }
         </>
-    )
-}
+    );
+};
 
-export default Forecast
+export default Forecast;
+

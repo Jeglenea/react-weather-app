@@ -16,24 +16,24 @@
     padding: 5px 20px;
 }
 
-.icon-small{
+.weather-icon {
     width: 50px;
 }
 
-.hour{
+.forecast-time {
     color: #212121;
     flex: 1 1;
     font-weight: 600;
     margin-left: 20px;
 }
 
-.desc{
+.weather-description {
     flex: 1 1;
     margin-right: 20px;
     text-align: right;
 }
 
-.temp-feelsLike{
+.temperature {
     color: #757575;
 }
 
@@ -49,6 +49,16 @@
 
 }
 
+.accordion-content[hidden] {
+    opacity: 0;
+    transform: scaleY(0);
+}
+
+.accordion-content {
+    animation: showhide .3s ease-in-out;
+    opacity: 1;
+    transform: scaleY(1);
+}
 .daily-detail-grid-item{
     display: flex;
     height: 30px;
