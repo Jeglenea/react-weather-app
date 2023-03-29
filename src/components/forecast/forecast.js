@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
-import { ExpandMore } from '@mui/icons-material';
-import "./forecast.css";
+import { useState } from 'react'
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material'
+import { ExpandMore } from '@mui/icons-material'
+import "./forecast.css"
 
-const forecastHours = ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"];
+const forecastHours = ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"]
 
 const Forecast = ({ data }) => {
-    const [selected, setSelected] = useState(null);
-    const hour = new Date().getHours();
-    const forecastStartIndex = Math.floor(hour / 3);
-    const forecastTimes = forecastHours.slice(forecastStartIndex, forecastHours.length).concat(forecastHours.slice(0, forecastStartIndex));
+    const [selected, setSelected] = useState(null)
+    const hour = new Date().getHours()
+    const forecastStartIndex = Math.floor(hour / 3)
+    const forecastTimes = forecastHours.slice(forecastStartIndex, forecastHours.length).concat(forecastHours.slice(0, forecastStartIndex))
     /* forecast 3 saatlik şekilde gösteriyor soru çözülmeli,
      sea level current weather e eklenicek*/
     return (
@@ -75,8 +75,8 @@ const Forecast = ({ data }) => {
             ))
             }
         </>
-    );
-};
+    )
+}
 
-export default Forecast;
+export default Forecast
 

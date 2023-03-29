@@ -1,6 +1,10 @@
 import "./current-weather.css"
+import icons from '../icons-current-weather/icons';
+import Unknown from "../icons-current-weather/unknown";
 
 const CurrentWeather = ({data}) => {
+    const WeatherIcon = icons[data.weather[0].icon] || Unknown;
+      
     return (
         <div className="weather">
             <div className="top">
@@ -8,7 +12,7 @@ const CurrentWeather = ({data}) => {
                 <p className="city">{data.city}</p>
                 <p className="weather-desc">{data.weather[0].description}</p>
                 </div>
-                <img alt="weather" className="weather-icon" src={`icons/${data.weather[0].icon}.png`}></img>
+                <WeatherIcon />
             </div>
             <div className="bottom">
                 <p className="temp">{Math.round(data.main.temp)}°C</p>
