@@ -1,12 +1,17 @@
-.title{
+.Header{
+    margin:auto;
     font-size: 23px;
     font-weight: 700;
+}
+.Header-info{
+    font-size: 12px;
+    padding-bottom: 5px;
 }
 
 .daily-item{
     background-color: #f5f5f5;
     box-shadow: 10px -2px 20px 2px rgb(0 0 0 / 15%);
-    border-radius: 15px;
+    
     height: 40px;
     margin: 5px;
     display: flex;
@@ -16,8 +21,17 @@
     padding: 5px 20px;
 }
 
-.weather-icon {
-    width: 50px;
+.MuiAccordion-root {
+    border-radius: 10px;
+  }
+
+.MuiAccordion-root + .MuiAccordion-root {
+    margin-top: 5px;
+  }
+
+.weather-icon-forecast {
+    width: 35px;
+    height: 35px;
 }
 
 .forecast-time {
@@ -25,15 +39,24 @@
     flex: 1 1;
     font-weight: 600;
     margin-left: 20px;
+    padding: 5px 15px;
 }
 
+.day-info{
+    color: #757575;
+    padding-top: 5px;
+    padding-left: 50px;
+    font-weight: 600;
+}
 .weather-description {
     flex: 1 1;
     margin-right: 20px;
     text-align: right;
+    padding: 5px 15px;
 }
 
 .temperature {
+    padding-top: 5px;
     color: #757575;
 }
 
