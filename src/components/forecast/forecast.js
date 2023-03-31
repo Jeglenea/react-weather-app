@@ -10,8 +10,6 @@ const Forecast = ({ data }) => {
     const hour = new Date().getHours()
     const forecastStartIndex = Math.floor(hour / 3)
     const forecastTimes = forecastHours.slice(forecastStartIndex, forecastHours.length).concat(forecastHours.slice(0, forecastStartIndex))
-    /* forecast 3 saatlik şekilde gösteriyor soru çözülmeli,
-     sea level current weather e eklenicek*/
     return (
         <>
             <Typography variant="h6" gutterBottom>
